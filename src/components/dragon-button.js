@@ -1,17 +1,32 @@
 import { LitElement, html } from '@polymer/lit-element';
 
+const TITLES = {
+  eel: 'Ål',
+  fire: 'Eld',
+  ground: 'Grundis',
+  green: 'Grön',
+  clay: 'Lera',
+  lava: 'Lava',
+  smelt: 'Smält',
+  hard: 'Hård',
+  air: 'Luft',
+  stone: 'Sten',
+  odd: 'Udda',
+  crystal: 'Kristall'
+};
+
 class DragonButton extends LitElement {
-  _render({name,title,active,disabled}) {
+  _render({kind,active,disabled}) {
     return html`
       <style>
         :host { 
-          display: inline-block; 
           position: relative;
           width: 160px;
           height: 52px;
           margin: 8px;
           --active-color: #a67a00;
           --inactive-color: #aaa;
+          display: block;
         }
         .icon-frame {
           position: absolute;
@@ -73,17 +88,16 @@ class DragonButton extends LitElement {
         }
       </style>
      
-      <div class="icon-frame" title$="${title}" active$="${active}" disabled$="${disabled}"></div> 
-      <div class="icon" disabled$="${disabled}" style="background-image: url(images/dragons/${name}-40.png);"></div>
-      <div class="title">${this.title}</div>
+      <div class="icon-frame" title$="${TITLES[kind]}" active$="${active}" disabled$="${disabled}"></div> 
+      <div class="icon" disabled$="${disabled}" style="background-image: url(images/dragons/${kind}-40.png);"></div>
+      <div class="title">${TITLES[kind]}</div>
       <div class="paren begin" active$="${active}"></div>
       <div class="paren end" active$="${active}"></div>
     `;
   }
 
   static get properties() { return {
-    name: String,
-    title: String,
+    kind: String,
     active: Boolean,
     disabled: Boolean
   }}
