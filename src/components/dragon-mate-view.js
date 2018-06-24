@@ -19,6 +19,9 @@ store.addReducers({
   dragons
 });
 
+// These are the elements needed by this element.
+import './dragon-button.js';
+
 // These are the shared styles needed by this element.
 import { SharedStyles } from './shared-styles.js';
 

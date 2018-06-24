@@ -27,7 +27,6 @@ store.addReducers({
 // These are the elements needed by this element.
 import './shop-products.js';
 import './shop-cart.js';
-import './dragon-button.js';
 
 // These are the shared styles needed by this element.
 import { SharedStyles } from './shared-styles.js';
