@@ -38,10 +38,10 @@ class DragonButton extends LitElement {
           display: inline-block;
           border: solid 2px var(--inactive-color);
           box-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
-	  background: linear-gradient(135deg, rgba(96,96,128,1) 0%, rgba(32,32,128,1) 100%);
+	        background: linear-gradient(135deg, rgba(96,96,128,1) 0%, rgba(32,32,128,1) 100%);
         }
         .icon-frame[disabled] {
-	  background: linear-gradient(135deg, rgba(96,96,96,1) 0%, rgba(32,32,32,1) 100%);
+	        background: linear-gradient(135deg, rgba(96,96,96,1) 0%, rgba(32,32,32,1) 100%);
         } 
         .icon-frame[active] {
           border-color: var(--active-color);
@@ -88,11 +88,11 @@ class DragonButton extends LitElement {
         }
       </style>
      
-      <div class="icon-frame" title$="${TITLES[kind]}" active$="${active}" disabled$="${disabled}"></div> 
-      <div class="icon" disabled$="${disabled}" style="background-image: url(images/dragons/${kind}-40.png);"></div>
+      <div class="icon-frame" title$="${TITLES[kind]}" active?="${active}" disabled?="${disabled}"></div> 
+      <div class="icon" disabled?="${disabled}" style="background-image: url(images/dragons/${kind}-40.png);"></div>
       <div class="title">${TITLES[kind]}</div>
-      <div class="paren begin" active$="${active}"></div>
-      <div class="paren end" active$="${active}"></div>
+      <div class="paren begin" active?="${active}"></div>
+      <div class="paren end" active?="${active}"></div>
     `;
   }
 

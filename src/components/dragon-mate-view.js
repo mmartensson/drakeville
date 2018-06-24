@@ -26,6 +26,7 @@ class DragonMateView extends connect(store)(PageViewElement) {
   _render({_active,_disabled}) {
     const btn = kind => {
       return html`<dragon-button kind="${kind}"
+        on-click="${() => { store.dispatch(spawnDragon(kind)) }}"
         active?="${_active.has(kind)}"
         disabled?="${_disabled.has(kind)}"></dragon-button>`;
     }
