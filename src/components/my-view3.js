@@ -79,25 +79,6 @@ class MyView3 extends connect(store)(PageViewElement) {
             Checkout
           </button>
         </p>
-
-        <table border=0><tr><td> 
-        <dragon-button name="eel" active title="Ål"></dragon-button><br>
-        <dragon-button name="fire" active title="Eld"></dragon-button>
-        </td><td>
-        <dragon-button name="ground" active title="Grundis"></dragon-button>
-        </td><td>
-        <dragon-button name="green" title="Grön"></dragon-button><br>
-        <dragon-button name="clay" title="Lera"></dragon-button>
-        <dragon-button name="lava" active title="Lava"></dragon-button>
-        <dragon-button name="smelt" active title="Smält"></dragon-button>
-        </td><td>
-        <dragon-button name="hard" disabled title="Hård"></dragon-button>
-        <dragon-button name="air" active title="Luft"></dragon-button>
-        </td><td>
-        <dragon-button name="stone" disabled title="Sten"></dragon-button>
-        <dragon-button name="odd" disabled title="Udda"></dragon-button>
-        <dragon-button name="crystal" active title="Kristall"></dragon-button>
-        </td></tr></table>
       </section>
     `;
   }

@@ -39,7 +39,7 @@ class DragonButton extends LitElement {
           top: 7px;
         }
         .icon[disabled] {
-          filter: grayscale(80%);
+          filter: grayscale(95%);
         } 
         .title {
           font-family: "Open Sans", Arial, "Helvetica Neue", Helvetica, sans-serif;

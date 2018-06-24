@@ -40,6 +40,9 @@ const loadPage = (page) => (dispatch) => {
     case 'view3':
       import('../components/my-view3.js');
       break;
+    case 'dragon-mate':
+      import('../components/dragon-mate-view.js');
+      break;
     default:
       page = 'view404';
       import('../components/my-view404.js');

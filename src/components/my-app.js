@@ -192,6 +192,7 @@ class MyApp extends connect(store)(LitElement) {
         <a selected?="${_page === 'view1'}" href="/view1">View One</a>
         <a selected?="${_page === 'view2'}" href="/view2">View Two</a>
         <a selected?="${_page === 'view3'}" href="/view3">View Three</a>
+        <a selected?="${_page === 'dragon-mate'}" href="/dragon-mate">Dragon Mating</a>
       </nav>
     </app-header>
 
@@ -202,6 +203,7 @@ class MyApp extends connect(store)(LitElement) {
         <a selected?="${_page === 'view1'}" href="/view1">View One</a>
         <a selected?="${_page === 'view2'}" href="/view2">View Two</a>
         <a selected?="${_page === 'view3'}" href="/view3">View Three</a>
+        <a selected?="${_page === 'dragon-mate'}" href="/dragon-mate">Dragon Mating</a>
       </nav>
     </app-drawer>
 
@@ -210,6 +212,7 @@ class MyApp extends connect(store)(LitElement) {
       <my-view1 class="page" active?="${_page === 'view1'}"></my-view1>
       <my-view2 class="page" active?="${_page === 'view2'}"></my-view2>
       <my-view3 class="page" active?="${_page === 'view3'}"></my-view3>
+      <dragon-mate-view class="page" active?="${_page === 'dragon-mate'}"></dragon-mate-view>
       <my-view404 class="page" active?="${_page === 'view404'}"></my-view404>
     </main>
 
