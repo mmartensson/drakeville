@@ -37,8 +37,8 @@ const loadPage = (page) => (dispatch) => {
     case 'view2':
       import('../components/my-view2.js');
       break;
-    case 'view3':
-      import('../components/my-view3.js');
+    case 'dragon-list':
+      import('../components/dragon-list-view.js');
       break;
     case 'dragon-mate':
       import('../components/dragon-mate-view.js');

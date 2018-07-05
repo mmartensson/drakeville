@@ -185,7 +185,7 @@ class DrakevilleMain extends connect(store)(LitElement) {
       <nav class="toolbar-list">
         <a selected?="${_page === 'view1'}" href="/view1">View One</a>
         <a selected?="${_page === 'view2'}" href="/view2">View Two</a>
-        <a selected?="${_page === 'view3'}" href="/view3">View Three</a>
+        <a selected?="${_page === 'dragon-list'}" href="/dragon-list">Dragon List</a>
         <a selected?="${_page === 'dragon-mate'}" href="/dragon-mate">Dragon Mating</a>
       </nav>
     </app-header>
@@ -196,7 +196,7 @@ class DrakevilleMain extends connect(store)(LitElement) {
       <nav class="drawer-list">
         <a selected?="${_page === 'view1'}" href="/view1">View One</a>
         <a selected?="${_page === 'view2'}" href="/view2">View Two</a>
-        <a selected?="${_page === 'view3'}" href="/view3">View Three</a>
+        <a selected?="${_page === 'dragon-list'}" href="/dragon-list">Dragon List</a>
         <a selected?="${_page === 'dragon-mate'}" href="/dragon-mate">Dragon Mating</a>
       </nav>
     </app-drawer>
@@ -205,7 +205,7 @@ class DrakevilleMain extends connect(store)(LitElement) {
     <main role="main" class="main-content">
       <my-view1 class="page" active?="${_page === 'view1'}"></my-view1>
       <my-view2 class="page" active?="${_page === 'view2'}"></my-view2>
-      <my-view3 class="page" active?="${_page === 'view3'}"></my-view3>
+      <dragon-list-view class="page" active?="${_page === 'dragon-list'}"></dragon-list-view>
       <dragon-mate-view class="page" active?="${_page === 'dragon-mate'}"></dragon-mate-view>
       <my-view404 class="page" active?="${_page === 'view404'}"></my-view404>
     </main>

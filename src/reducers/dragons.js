@@ -43,8 +43,8 @@ const dragons = (state = {alive: INITIAL_ALIVE, dead: []}, action) => {
 
 export default dragons;
 
-const aliveSelector = state => state.dragons.alive;
-const deadSelector = state => state.dragons.dead;
+export const aliveSelector = state => state.dragons.alive;
+export const deadSelector = state => state.dragons.dead;
 
 const DRAGON_PARENTS = {
   eel: null,
