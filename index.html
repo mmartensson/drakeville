@@ -68,6 +68,20 @@ Copyright (c) 2018 Markus Mårtensson. All rights reserved.
       window.process = { env: { NODE_ENV: 'production' } };
     </script>
 
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBOFXYk3-2MoQSCGEuVAGG9ZuVsd5JuDKc",
+        authDomain: "drakeville-d7ac1.firebaseapp.com",
+        databaseURL: "https://drakeville-d7ac1.firebaseio.com",
+        projectId: "drakeville-d7ac1",
+        storageBucket: "drakeville-d7ac1.appspot.com",
+        messagingSenderId: "330927330179"
+      };
+      firebase.initializeApp(config);
+    </script>
+
     <!-- Add any global styles for body, document, etc. -->
     <style>
       @font-face {
