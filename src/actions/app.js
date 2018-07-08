@@ -8,11 +8,35 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 */
 
+export const AUTHENTICATED = 'AUTHENTICATED';
+export const AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED';
 export const UPDATE_PAGE = 'UPDATE_PAGE';
 export const UPDATE_OFFLINE = 'UPDATE_OFFLINE';
 export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE';
 export const OPEN_SNACKBAR = 'OPEN_SNACKBAR';
 export const CLOSE_SNACKBAR = 'CLOSE_SNACKBAR';
+
+// Should use firebase.auth().onAuthStateChanged instead
+export const authenticate = () => (dispatch) => {
+  let provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider)
+    .then(result => dispatch(authenticated(result)))
+    .catch(error => dispatch(authenticationFailed(result)));
+};
+
+export const authenticated = (result) => {
+  return {
+    type: AUTHENTICATED,
+    user: result.user
+  };
+};
+
+export const authenticationFailed = (error) => {
+  return {
+    type: AUTHENTICATION_FAILED,
+    message: error.message
+  };
+};
 
 export const navigate = (path) => (dispatch) => {
   // Extract the page name from path.

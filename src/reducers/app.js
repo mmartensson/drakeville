@@ -9,6 +9,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 */
 
 import {
+  AUTHENTICATED,
+  AUTHENTICATION_FAILED,
   UPDATE_PAGE,
   UPDATE_OFFLINE,
   OPEN_SNACKBAR,
@@ -18,6 +20,20 @@ import {
 
 const app = (state = {drawerOpened: false}, action) => {
   switch (action.type) {
+    case AUTHENTICATED:
+      return {
+        ...state,
+        user: action.user,
+        authFailure: null
+      };
+    case AUTHENTICATION_FAILED:
+      return {
+        ...state,
+        user: null,
+        authFailure: {
+          message: action.message
+        }
+      };
     case UPDATE_PAGE:
       return {
         ...state,
