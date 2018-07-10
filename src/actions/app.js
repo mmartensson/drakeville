@@ -20,18 +20,18 @@ export const CLOSE_SNACKBAR = 'CLOSE_SNACKBAR';
 export const authenticate = () => (dispatch) => {
   let provider = new firebase.auth.GoogleAuthProvider();
   firebase.auth().signInWithPopup(provider)
-    .then(result => dispatch(authenticated(result)))
-    .catch(error => dispatch(authenticationFailed(result)));
+    .then(result => dispatch(authenticated(result.user)))
+    .catch(error => dispatch(authenticationFailed(error)));
 };
 
-export const authenticated = (result) => {
+export const authenticated = (user) => {
   return {
     type: AUTHENTICATED,
-    user: result.user
+    user
   };
 };
 
-export const authenticationFailed = (error) => {
+const authenticationFailed = (error) => {
   return {
     type: AUTHENTICATION_FAILED,
     message: error.message
@@ -40,7 +40,7 @@ export const authenticationFailed = (error) => {
 
 export const navigate = (path) => (dispatch) => {
   // Extract the page name from path.
-  const page = path === '/' ? 'view1' : path.slice(1);
+  const page = path === '/' ? 'about' : path.slice(1);
 
   // Any other info you might want to extract from the path (like page type),
   // you can do here
@@ -52,14 +52,11 @@ export const navigate = (path) => (dispatch) => {
 
 const loadPage = (page) => (dispatch) => {
   switch(page) {
-    case 'view1':
-      import('../components/my-view1.js').then((module) => {
+    case 'about':
+      import('../components/about-view.js').then((module) => {
         // Put code in here that you want to run every time when
-        // navigating to view1 after my-view1.js is loaded.
+        // navigating to view1 after about-view1.js is loaded.
       });
-      break;
-    case 'view2':
-      import('../components/my-view2.js');
       break;
     case 'dragon-list':
       import('../components/dragon-list-view.js');

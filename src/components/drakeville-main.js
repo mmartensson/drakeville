@@ -16,6 +16,7 @@ import { store } from '../store.js';
 
 // These are the actions needed by this element.
 import {
+  authenticated,
   navigate,
   updateOffline,
   updateDrawerState,
@@ -183,8 +184,7 @@ class DrakevilleMain extends connect(store)(LitElement) {
 
       <!-- This gets hidden on a small screen-->
       <nav class="toolbar-list">
-        <a selected?="${_page === 'view1'}" href="/view1">View One</a>
-        <a selected?="${_page === 'view2'}" href="/view2">View Two</a>
+        <a selected?="${_page === 'about'}" href="/about">Drakeville</a>
         <a selected?="${_page === 'dragon-list'}" href="/dragon-list">Dragon List</a>
         <a selected?="${_page === 'dragon-mate'}" href="/dragon-mate">Dragon Mating</a>
       </nav>
@@ -194,8 +194,7 @@ class DrakevilleMain extends connect(store)(LitElement) {
     <app-drawer opened="${_drawerOpened}"
         on-opened-changed="${e => store.dispatch(updateDrawerState(e.target.opened))}">
       <nav class="drawer-list">
-        <a selected?="${_page === 'view1'}" href="/view1">View One</a>
-        <a selected?="${_page === 'view2'}" href="/view2">View Two</a>
+        <a selected?="${_page === 'about'}" href="/about">Drakeville</a>
         <a selected?="${_page === 'dragon-list'}" href="/dragon-list">Dragon List</a>
         <a selected?="${_page === 'dragon-mate'}" href="/dragon-mate">Dragon Mating</a>
       </nav>
@@ -203,15 +202,14 @@ class DrakevilleMain extends connect(store)(LitElement) {
 
     <!-- Main content -->
     <main role="main" class="main-content">
-      <my-view1 class="page" active?="${_page === 'view1'}"></my-view1>
-      <my-view2 class="page" active?="${_page === 'view2'}"></my-view2>
+      <about-view class="page" active?="${_page === 'about'}"></my-view1>
       <dragon-list-view class="page" active?="${_page === 'dragon-list'}"></dragon-list-view>
       <dragon-mate-view class="page" active?="${_page === 'dragon-mate'}"></dragon-mate-view>
       <my-view404 class="page" active?="${_page === 'view404'}"></my-view404>
     </main>
 
     <footer>
-      <p>Made with &hearts; by the Polymer team.</p>
+      <p>© 2018 Markus Mårtensson & Vilmer Burholm</p>
     </footer>
 
     <snack-bar active?="${_snackbarOpened}">
@@ -241,6 +239,15 @@ class DrakevilleMain extends connect(store)(LitElement) {
     installOfflineWatcher((offline) => store.dispatch(updateOffline(offline)));
     installMediaQueryWatcher(`(min-width: 460px)`,
         (matches) => store.dispatch(updateLayout(matches)));
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        console.info(`User ${user.displayName} <${user.email}> has logged on`);
+        store.dispatch(authenticated(user));
+      } else {
+        console.info('User has logged out');
+      }
+    });
   }
 
   _didRender(properties, changeList) {

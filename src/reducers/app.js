@@ -64,4 +64,6 @@ const app = (state = {drawerOpened: false}, action) => {
   }
 };
 
+export const playerSelector = state => state.app.user;
+
 export default app;
