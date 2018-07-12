@@ -56,7 +56,7 @@ class DragonMateView extends connect(store)(PageViewElement) {
           ${btn('crystal')}
         </td></tr></table>
       </section>
-    `
+    `;
   }
 
   static get properties() { return {

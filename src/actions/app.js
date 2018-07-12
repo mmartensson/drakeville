@@ -31,7 +31,7 @@ export const authenticated = (user) => {
   };
 };
 
-const authenticationFailed = (error) => {
+export const authenticationFailed = (error) => {
   return {
     type: AUTHENTICATION_FAILED,
     message: error.message

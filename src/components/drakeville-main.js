@@ -17,6 +17,7 @@ import { store } from '../store.js';
 // These are the actions needed by this element.
 import {
   authenticated,
+  authenticationFailed,
   navigate,
   updateOffline,
   updateDrawerState,
@@ -202,7 +203,7 @@ class DrakevilleMain extends connect(store)(LitElement) {
 
     <!-- Main content -->
     <main role="main" class="main-content">
-      <about-view class="page" active?="${_page === 'about'}"></my-view1>
+      <about-view class="page" active?="${_page === 'about'}"></about-view>
       <dragon-list-view class="page" active?="${_page === 'dragon-list'}"></dragon-list-view>
       <dragon-mate-view class="page" active?="${_page === 'dragon-mate'}"></dragon-mate-view>
       <my-view404 class="page" active?="${_page === 'view404'}"></my-view404>
@@ -246,6 +247,7 @@ class DrakevilleMain extends connect(store)(LitElement) {
         store.dispatch(authenticated(user));
       } else {
         console.info('User has logged out');
+        store.dispatch(authenticationFailed({message: 'User logged out'}));
       }
     });
   }
