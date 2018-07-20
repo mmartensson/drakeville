@@ -11,7 +11,7 @@ import { connect } from 'pwa-helpers/connect-mixin.js';
 import { store } from '../store.js';
 
 // These are the actions needed by this element.
-import { spawnDragon, slayDragon } from '../actions/dragons.js';
+import { spawnDragon, slayDragon, mateDragons } from '../actions/dragons.js';
 
 // We are lazy loading its reducer.
 import dragons, { activeDisabledKindsSelector } from '../reducers/dragons.js';
@@ -29,7 +29,7 @@ class DragonMateView extends connect(store)(PageViewElement) {
   _render({_active,_disabled}) {
     const btn = kind => {
       return html`<dragon-button kind="${kind}"
-        on-click="${() => { store.dispatch(spawnDragon(kind)) }}"
+        on-click="${() => { store.dispatch(spawnDragon(kind)); }}"
         active?="${_active.has(kind)}"
         disabled?="${_disabled.has(kind)}"></dragon-button>`;
     }
@@ -37,6 +37,8 @@ class DragonMateView extends connect(store)(PageViewElement) {
     return html`
       ${SharedStyles}
       <section>
+        <div on-click="${() => { store.dispatch(mateDragons('eel','fire')); }}">TEST</div>
+
         <table border=0><tr><td>
           ${btn('eel')}
           ${btn('fire')}

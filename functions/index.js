@@ -5,13 +5,38 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
-const verifyPlayer = (context) => {
+const verifyPlayer = (context, expectGame) => {
   // Checking that the user is authenticated.
   if (!context.auth) {
     // Throwing an HttpsError so that the client gets the error details.
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.');
   }
-  return context.auth;
+
+  const uid = context.auth.uid;
+  const playerRef = admin.firestore().collection('players').doc(uid);
+  let player;
+  playerRef.get()
+    .then(doc => {
+      if (!doc.exists) {
+        const displayName = context.auth.displayName;
+        player = {
+          displayName
+        };
+        playerRef.set(player);
+      } else {
+        player = doc.data();
+      }
+      return player; // satisfy promise/always-return
+    })
+    .catch(err => {
+      throw new functions.https.HttpsError('unavailable', `Failed loading player data: ${err}.`);
+    });
+
+  if (expectGame && !player.game) {
+    throw new functions.https.HttpsError('failed-precondition', 'Player is not currently playing a game.');
+  }
+
+  return Object.assign(player, { uid });
 };
 
 const childKindForParents = (first, second) => {
@@ -34,10 +59,10 @@ const childKindForParents = (first, second) => {
 
   if (set.has('fire')) {
     if (set.has('ground'))
-    return ['smelt','lava'][Math.round(Math.random())];
+      return ['smelt','lava'][Math.round(Math.random())];
 
     if (set.has('clay'))
-    return 'hard';
+      return 'hard';
   }
 
   if (set.has('hard')) {
@@ -56,14 +81,21 @@ const childKindForParents = (first, second) => {
 };
 
 exports.mateDragons = functions.https.onCall((data, context) => {
-  const player = verifyPlayer(context);
+  const player = verifyPlayer(context, true);
 
-  const conceived = new Date().getTime();
+  const now = new Date().getTime();
+  const conceived = now;
   const hatches = conceived + 1000 * 60 * 2;
   const kind = childKindForParents(data.first, data.second);
-  const egg = { kind, hatches };
+  let egg = { kind, conceived, hatches };
 
   // Store egg for player
+  // FIXME: Return egg identifier
+
+  egg.conceivedRelative = conceived-now;
+  egg.hatchesRelative = hatches-now;
 
   return { egg };
 });
+
+// exports.hatchEgg ...
