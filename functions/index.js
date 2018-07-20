@@ -14,29 +14,31 @@ const verifyPlayer = (context, expectGame) => {
 
   const uid = context.auth.uid;
   const playerRef = admin.firestore().collection('players').doc(uid);
-  let player;
-  playerRef.get()
+
+  return playerRef.get()
     .then(doc => {
       if (!doc.exists) {
         const displayName = context.auth.displayName;
         player = {
           displayName
         };
+        console.log(`Storing initial player information for ${uid}`, player);
         playerRef.set(player);
       } else {
         player = doc.data();
+        console.log(`Read player information for ${uid}`, player);
       }
-      return player; // satisfy promise/always-return
+
+      if (expectGame && !player.game) {
+        throw new functions.https.HttpsError('failed-precondition', 'Player is not currently playing a game.');
+      }
+
+      return player;
     })
     .catch(err => {
-      throw new functions.https.HttpsError('unavailable', `Failed loading player data: ${err}.`);
+      console.log(`Failed reading player information for ${uid}: $err`);
+      throw new functions.https.HttpsError('unavailable', `Failed reading player data: ${err}.`);
     });
-
-  if (expectGame && !player.game) {
-    throw new functions.https.HttpsError('failed-precondition', 'Player is not currently playing a game.');
-  }
-
-  return Object.assign(player, { uid });
 };
 
 const childKindForParents = (first, second) => {
@@ -81,21 +83,26 @@ const childKindForParents = (first, second) => {
 };
 
 exports.mateDragons = functions.https.onCall((data, context) => {
-  const player = verifyPlayer(context, true);
-
   const now = new Date().getTime();
   const conceived = now;
   const hatches = conceived + 1000 * 60 * 2;
   const kind = childKindForParents(data.first, data.second);
   let egg = { kind, conceived, hatches };
 
-  // Store egg for player
-  // FIXME: Return egg identifier
-
-  egg.conceivedRelative = conceived-now;
-  egg.hatchesRelative = hatches-now;
-
-  return { egg };
+  return verifyPlayer(context, true)
+    .then(player => {
+      const gameRef = player.game;
+      const gamePlayerRef = gameRef.collection('players').doc(context.auth.uid);
+      const eggsRef = gamePlayerRef.collection('eggs');
+      return eggsRef.add(egg);
+    })
+    .then(eggRef => {
+      return Object.assign(egg, {
+        id: eggRef.id,
+        conceivedRelative: conceived-now,
+        hatchesRelative: hatches-now
+      });
+    });
 });
 
 // exports.hatchEgg ...
