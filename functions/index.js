@@ -5,6 +5,8 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
+const FieldValue = admin.firestore.FieldValue;
+
 const verifyPlayer = (context, expectGame) => {
   // Checking that the user is authenticated.
   if (!context.auth) {
@@ -83,9 +85,10 @@ const childKindForParents = (first, second) => {
 };
 
 exports.mateDragons = functions.https.onCall((data, context) => {
-  const now = new Date().getTime();
+  const now = new Date();
+  const nowEpoch = now.getTime();
   const conceived = now;
-  const hatches = conceived + 1000 * 60 * 2;
+  const hatches = new Date(nowEpoch + 1000 * 60 * 2);
   const kind = childKindForParents(data.first, data.second);
   let egg = { kind, conceived, hatches };
 
@@ -99,10 +102,46 @@ exports.mateDragons = functions.https.onCall((data, context) => {
     .then(eggRef => {
       return Object.assign(egg, {
         id: eggRef.id,
-        conceivedRelative: conceived-now,
-        hatchesRelative: hatches-now
+        conceived: conceived.getTime()-nowEpoch,
+        hatches: hatches.getTime()-nowEpoch
       });
     });
 });
 
-// exports.hatchEgg ...
+exports.hatchEgg = functions.https.onCall((data, context) => {
+  const now = new Date();
+  const nowEpoch = now.getTime();
+  let gamePlayerRef;
+  let dragon;
+
+  return verifyPlayer(context, true)
+    .then(player => {
+      const gameRef = player.game;
+      gamePlayerRef = gameRef.collection('players').doc(context.auth.uid);
+      const eggRef = gamePlayerRef.collection('eggs').doc(data.id);
+      return eggRef.get();
+    })
+    .then(doc => {
+      const egg = doc.data();
+
+      if (egg.hatches.getTime() < nowEpoch) {
+        doc.delete();
+
+        dragon = {
+          kind: egg.kind,
+          level: 1,
+          hatched: now
+        };
+
+        const dragonsRef = gamePlayerRef.collections('dragons');
+        return dragonsRef.add(dragon);
+      } else {
+        throw new functions.https.HttpsError('failed-precondition', 'Egg is not ready to be hatched yet.');
+      }
+    })
+    .then(dragonRef => {
+      return Object.assign(dragon, {
+        id: dragonRef.id
+      });
+    });
+});
