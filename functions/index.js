@@ -58,7 +58,8 @@ const childKindForParents = (first, second) => {
 exports.mateDragons = functions.https.onCall((data, context) => {
   const player = verifyPlayer(context);
 
-  const hatches = +new Date() + 1000 * 60 * 2;
+  const conceived = new Date().getTime();
+  const hatches = conceived + 1000 * 60 * 2;
   const kind = childKindForParents(data.first, data.second);
   const egg = { kind, hatches };
 
