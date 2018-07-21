@@ -11,10 +11,10 @@ import { connect } from 'pwa-helpers/connect-mixin.js';
 import { store } from '../store.js';
 
 // These are the actions needed by this element.
-import { spawnDragon, slayDragon, mateDragons } from '../actions/dragons.js';
+import { selectMate, mateDragons } from '../actions/dragons.js';
 
 // We are lazy loading its reducer.
-import dragons, { activeDisabledKindsSelector } from '../reducers/dragons.js';
+import dragons, { activeDisabledKindsSelector, selectedMatesSelector } from '../reducers/dragons.js';
 store.addReducers({
   dragons
 });
@@ -26,19 +26,18 @@ import './dragon-button.js';
 import { SharedStyles } from './shared-styles.js';
 
 class DragonMateView extends connect(store)(PageViewElement) {
-  _render({_active,_disabled}) {
+  _render({_active,_disabled,_selected}) {
     const btn = kind => {
       return html`<dragon-button kind="${kind}"
-        on-click="${() => { store.dispatch(spawnDragon(kind)); }}"
+        on-click="${() => { if (_active.has(kind)) store.dispatch(selectMate(kind)); }}"
         active?="${_active.has(kind)}"
+        selected?="${_selected.has(kind)}"
         disabled?="${_disabled.has(kind)}"></dragon-button>`;
     }
 
     return html`
       ${SharedStyles}
       <section>
-        <div on-click="${() => { store.dispatch(mateDragons('eel','fire')); }}">TEST</div>
-
         <table border=0><tr><td>
           ${btn('eel')}
           ${btn('fire')}
@@ -57,6 +56,8 @@ class DragonMateView extends connect(store)(PageViewElement) {
           ${btn('odd')}
           ${btn('crystal')}
         </td></tr></table>
+
+        <div on-click="${() => { store.dispatch(mateDragons(..._selected)); }}">Mate</div>
       </section>
     `;
   }
@@ -64,7 +65,8 @@ class DragonMateView extends connect(store)(PageViewElement) {
   static get properties() { return {
     // This is the data from the store.
     _active: Object,
-    _disabled: Object
+    _disabled: Object,
+    _selected: Object
   }}
 
   // This is called every time something is updated in the store.
@@ -72,6 +74,7 @@ class DragonMateView extends connect(store)(PageViewElement) {
     const status = activeDisabledKindsSelector(state);
     this._active = status.active;
     this._disabled = status.disabled;
+    this._selected = selectedMatesSelector(state);
   }
 }
 

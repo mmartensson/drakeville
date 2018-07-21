@@ -3,10 +3,11 @@
 Copyright (c) 2018 Markus Mårtensson. All rights reserved.
 */
 
-import { SPAWN_DRAGON, SLAY_DRAGON } from '../actions/dragons.js';
+import { SPAWN_DRAGON, SLAY_DRAGON, SELECT_MATE } from '../actions/dragons.js';
 
 import { createSelector } from 'reselect';
 
+// FIXME: May want to move these to the backend
 const INITIAL_ALIVE = [
   { id: 1, kind: 'eel', level: 1 },
   { id: 2, kind: 'fire', level: 1 }
@@ -17,7 +18,7 @@ const newId = () => {
   return ++idCounter;
 }
 
-const dragons = (state = {alive: INITIAL_ALIVE, dead: []}, action) => {
+const dragons = (state = {alive: INITIAL_ALIVE, dead: [], selectedMates: []}, action) => {
   switch (action.type) {
     case SPAWN_DRAGON:
       return {
@@ -36,6 +37,20 @@ const dragons = (state = {alive: INITIAL_ALIVE, dead: []}, action) => {
         alive: [state.alive.slice().splice(ndx, 1)],
         dead: [...state.dead, dragon]
       };
+    case SELECT_MATE:
+      let selectedMates;
+      if (state.selectedMates.length >= 2) {
+        selectedMates = [action.kind];
+      } else if (state.selectedMates[0] === action.kind) {
+        selectedMates = [];
+      } else {
+        selectedMates = [...state.selectedMates, action.kind];
+      }
+      console.log('SELECT_MATE', action.kind, selectedMates);
+      return {
+        ...state,
+        selectedMates
+      }
     default:
       return state;
   }
@@ -45,6 +60,7 @@ export default dragons;
 
 export const aliveSelector = state => state.dragons.alive;
 export const deadSelector = state => state.dragons.dead;
+export const selectedMatesSelector = state => new Set(state.dragons.selectedMates);
 
 const DRAGON_PARENTS = {
   eel: null,

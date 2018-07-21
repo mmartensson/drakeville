@@ -16,7 +16,7 @@ const TITLES = {
 };
 
 class DragonButton extends LitElement {
-  _render({kind,active,disabled}) {
+  _render({kind,active,disabled,selected}) {
     return html`
       <style>
         :host { 
@@ -25,6 +25,7 @@ class DragonButton extends LitElement {
           height: 52px;
           margin: 8px;
           --active-color: #a67a00;
+          --selected-color: #33a633;
           --inactive-color: #aaa;
           display: block;
         }
@@ -45,6 +46,9 @@ class DragonButton extends LitElement {
         } 
         .icon-frame[active] {
           border-color: var(--active-color);
+        }
+        .icon-frame[selected] {
+          border-color: var(--selected-color);
         }
         .icon {
           width: 40px;
@@ -86,20 +90,24 @@ class DragonButton extends LitElement {
         .paren.begin[active], .paren.end[active] {
           border-color: var(--active-color);
         }
+        .paren.begin[selected], .paren.end[selected] {
+          border-color: var(--selected-color);
+        }
       </style>
      
-      <div class="icon-frame" title$="${TITLES[kind]}" active?="${active}" disabled?="${disabled}"></div> 
+      <div class="icon-frame" title$="${TITLES[kind]}" active?="${active}" disabled?="${disabled}" selected?="${selected}"></div> 
       <div class="icon" disabled?="${disabled}" style="background-image: url(images/dragons/${kind}-40.png);"></div>
       <div class="title">${TITLES[kind]}</div>
-      <div class="paren begin" active?="${active}"></div>
-      <div class="paren end" active?="${active}"></div>
+      <div class="paren begin" active?="${active}" selected?="${selected}"></div>
+      <div class="paren end" active?="${active}" selected?="${selected}"></div>
     `;
   }
 
   static get properties() { return {
     kind: String,
     active: Boolean,
-    disabled: Boolean
+    disabled: Boolean,
+    selected: Boolean
   }}
 }
 

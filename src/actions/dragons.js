@@ -5,6 +5,7 @@ Copyright (c) 2018 Markus Mårtensson. All rights reserved.
 
 export const SPAWN_DRAGON = 'SPAWN_DRAGON';
 export const SLAY_DRAGON = 'SLAY_DRAGON';
+export const SELECT_MATE = 'SELECT_MATE';
 
 export const mateDragons = (first,second) => (dispatch) => {
   let matingCall = firebase.functions().httpsCallable('mateDragons');
@@ -19,7 +20,14 @@ const reallyNeedErrorHandling = (error) => {
   return {
     type: 'Missing proper error handling',
     error
-  }
+  };
+};
+
+export const selectMate = (kind) => {
+  return {
+    type: SELECT_MATE,
+    kind
+  };
 };
 
 export const spawnDragon = (kind) => {
