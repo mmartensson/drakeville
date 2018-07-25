@@ -56,6 +56,8 @@ class DragonButton extends LitElement {
           position: absolute;
           left: 23px;
           top: 7px;
+          background-repeat: no-repeat;
+          background-position: center;
         }
         .icon[disabled] {
           filter: grayscale(95%);

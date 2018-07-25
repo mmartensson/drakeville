@@ -11,7 +11,7 @@ export const mateDragons = (first,second) => (dispatch) => {
   let matingCall = firebase.functions().httpsCallable('mateDragons');
   matingCall({first,second})
     // FIXME: Set up a client timer for the egg; spawnDragon deferred until successful hatchEgg
-    .then(result => dispatch(spawnDragon(result.data.egg.kind)))
+    .then(result => dispatch(spawnDragon(result.data.kind)))
     .catch(error => dispatch(reallyNeedErrorHandling(error)))
 };
 
